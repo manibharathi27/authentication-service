@@ -3,21 +3,21 @@ import { UserModule } from './user/user.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.gaurd';
-import { UserDto } from './user/dto/userDto';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmConfigService } from './TypeOrmConfigService ';
 
 @Module({
-  imports: [UserModule, 
+  imports: [UserModule,
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     AuthenticationModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: '127.0.0.1',
-      port: 5432,
-      username: 'postgres',
-      password: 'Manibh27@',
-      database: 'userservicedb',
-      entities: [UserDto]
-    })],
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: TypeOrmConfigService,
+    })
+  ],
   providers: [
     {
       provide: APP_GUARD,
@@ -25,4 +25,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     },
   ]
 })
-export class AppModule {}
+export class AppModule { }
