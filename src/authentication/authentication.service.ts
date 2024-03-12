@@ -9,7 +9,7 @@ export class AuthenticationService {
 
   async signIn(userName: string, pass: string): Promise<{ access_token: string }> {
     const user = await this.userService.findUserByName(userName);
-    if (!await bcrypt.compare(pass, user.password)) {
+    if (user ==null || !await bcrypt.compare(pass, user.password)) {
       throw new UnauthorizedException();
     }
 

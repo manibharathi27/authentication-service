@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common'
 import { UserDto } from './dto/userDto';
 import { UserService } from './user.service';
 import { Public } from 'src/public.decorator';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('User')
 @Controller('user')
@@ -11,11 +11,16 @@ export class UserController {
 
     @Public()
     @Post()
+    @ApiBody({
+        type: UserDto,
+        description: 'Json structure for user object'
+     })
     create(@Body() user: UserDto) {
         return this.userService.create(user);
     }
 
     @Get()
+    @ApiBearerAuth('access-token')
     findAll() {
         return this.userService.findUsers();
     }

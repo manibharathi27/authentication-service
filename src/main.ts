@@ -5,6 +5,16 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const options = new DocumentBuilder()
+  .addBearerAuth(
+    { 
+      name: 'Authorization',
+      bearerFormat: 'Bearer', 
+      scheme: 'Bearer',
+      type: 'http',
+      in: 'Header'
+    },
+    'access-token'
+  )
   .setTitle('Authentication Service')
   .setDescription('Authnticcation Service endpoints')
   .setVersion('1.0')

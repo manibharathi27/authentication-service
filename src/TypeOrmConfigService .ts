@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { UserDto } from './user/dto/userDto';
+import { CreateUsersTable1710250807261 } from 'src/1710250807261-CreateUsersTable';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -15,7 +16,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: this.configService.get<string>('DB_USERNAME'),
       password: this.configService.get<string>('DB_PASSWORD'),
       database: this.configService.get<string>('DB_NAME'),
-      entities: [UserDto]
+      entities: [UserDto],
+      migrations: [CreateUsersTable1710250807261],
+      migrationsRun: true
     };
   }
 }
